@@ -86,7 +86,7 @@ generateForm.addEventListener("submit", function (event) {
         alert("Le nombre de groupes doit être inférieur ou égal au nombre de participants")
     }
     if (numberGroups < 1) {
-        alert{"Le nombre de groupes doit être supérieur à 1"}
+        alert("Le nombre de groupes doit être supérieur à 1")
     }
 
     generateGroups(participantsElt, numberGroups)
