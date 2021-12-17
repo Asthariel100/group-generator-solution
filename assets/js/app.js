@@ -3,12 +3,11 @@ function addParticipant(event) {
     event.preventDefault();
     const nameInputElt = document.getElementById('nameInput')
     const participantName = nameInputElt.value.trim();
-    console.log("test")
     if (participantName === "") {
         alert("le Nom est obligatioire !!");
         return;
     }
-    const participantElt = `<li class="participant">${participantName}</li>`;
+    const participantElt = `<li class="participant">${participantName}<span class="degage">"X"</span></li>`;
     const participantListElt = document.getElementById("participantList");
     participantListElt.innerHTML = participantListElt.innerHTML + participantElt;
     nameInputElt.value = "";
@@ -18,6 +17,33 @@ function addParticipant(event) {
 const addNameformElt = document.getElementById("addNameForm");
 addNameformElt.addEventListener('submit', addParticipant);
 
+function supprimer(event) {
+    var elementClick = event.target;
+    if (elementClick.classList.contains("degage")) {
+        elementClick.parentNode.remove()
+    }
+
+}
+const testElt = document.getElementById("participantList")
+
+testElt.addEventListener("click", supprimer);
+
+
+function shuffleArray(array) {
+    /*  */
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        /* Je prend un chifrre au hasard basé sur la valeur actuelle de l'index, Math random au hasard puis math floor pour avoir un chiffre rond */
+        
+        /* je crée un variable temporaire dans laquelle je mets lindex actuel */
+        const temp = array[i];
+        /* je remplace la valeur de lindex actuel par lindex numéroté précedemment par le math floor et le math random */
+        array[i] = array[j];
+        /* swap de [i] par [j] */
+        array[j] = temp;
+        /* La valeur temp deviens la valeur de l'index "j" */
+    }
+}
 /**
  * 
  * @param {*} participants 
@@ -25,10 +51,12 @@ addNameformElt.addEventListener('submit', addParticipant);
  */
 function generateGroups(participants, numberGroups) {
     const sorted = participants
-        .map((participant) => ({ participant, sort: Math.random() }))
-        .sort((a, b) => a.sort - b.sort)
-        .map((participant) => participant.participant)
-
+    /*  .map((participant) => ({ participant, sort: Math.random() }))
+     .sort((a, b) => a.sort - b.sort)
+     .map((participant) => participant.participant)*/
+    /* je mets au dessus en commentaires l'ancienne version; ensuite j'appel ma nouvelle fonction */
+    shuffleArray(participants)
+    /* Et paf ça fait des chocapic ! */
     const groupsArr = [];
     for (let i = 0; i < numberGroups; i++) {
         groupsArr.push([])
@@ -42,6 +70,7 @@ function generateGroups(participants, numberGroups) {
         }
 
     }
+
     const groupeListElt = document.getElementById("groupList")
 
     groupeListElt.innerHtml = "";
@@ -82,7 +111,7 @@ generateForm.addEventListener("submit", function (event) {
         alert("Le nombre de groupes doit être supérieur à 1");
         return;
     }
-    if(numberGroups > participantsElt.length){
+    if (numberGroups > participantsElt.length) {
         alert("Le nombre de groupes doit être inférieur ou égal au nombre de participants")
     }
     if (numberGroups < 1) {
